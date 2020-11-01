@@ -14,32 +14,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+  final TextEditingController inputController = TextEditingController(text: 'com.sm9i.apk_installed_example');
+
+  bool isInstall;
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      platformVersion = await ApkInstalled.platformVersion;
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
   }
 
   @override
@@ -49,10 +30,28 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            TextField(
+              controller: inputController,
+              decoration: const InputDecoration(hintText: '请输入检测的包名'),
+              onSubmitted: check,
+            ),
+            RaisedButton(onPressed: () => check(inputController.text), child: Text('检测是否存在')),
+            if (isInstall != null)
+              Text(
+                isInstall ? '安装' : '没安装',
+                style: Theme.of(context).textTheme.caption,
+              )
+          ],
         ),
       ),
     );
+  }
+
+  void check(String value) async {
+    isInstall = await ApkInstalled.isInstall(package: inputController.text);
+    setState(() {});
   }
 }
