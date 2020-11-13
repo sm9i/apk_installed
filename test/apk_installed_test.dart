@@ -18,6 +18,5 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    expect(await ApkInstalled.platformVersion, '42');
   });
 }
