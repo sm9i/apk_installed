@@ -6,7 +6,7 @@ description: Demonstrates how to use the apk_installed plugin.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 environment:
-  sdk: "2.10.5"
+  sdk: ">=2.10.5"
 
 dependencies:
   flutter:
