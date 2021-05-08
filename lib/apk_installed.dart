@@ -9,18 +9,18 @@ class ApkInstalled {
 
   ///判断apk 是否已经安装
   ///[package] 包名
-  static Future<bool> isInstall({@required String package}) async {
-    if (Platform.isIOS || package == null || package.trim().isEmpty) {
+  static Future<bool?> isInstall({required String package}) async {
+    if (Platform.isIOS || package.trim().isEmpty) {
       return false;
     }
     try {
-      final bool isInstall = await _channel.invokeMethod<bool>(
+      final bool? isInstall = await _channel.invokeMethod<bool>(
         'getPackageIsInstalled',
         <String, String>{'package_name': package},
       );
       return isInstall;
     } on Exception catch (e) {
-      debugPrint(e?.toString());
+      debugPrint(e.toString());
       return false;
     }
   }
