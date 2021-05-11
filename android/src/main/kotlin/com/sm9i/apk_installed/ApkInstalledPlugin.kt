@@ -27,9 +27,15 @@ class ApkInstalledPlugin : FlutterPlugin, MethodCallHandler {
         if (call.method == "getPackageIsInstalled") {
             val packageName: String? = call.argument<String>("package_name")
             try {
-                val applicationInfo = mApplicationContext?.packageManager?.getPackageInfo(packageName, PackageManager.MATCH_UNINSTALLED_PACKAGES)
-                if (applicationInfo != null) {
-                    result.success(true)
+                if (packageName != null) {
+
+                    val applicationInfo = mApplicationContext?.packageManager?.getPackageInfo(packageName, PackageManager.MATCH_UNINSTALLED_PACKAGES)
+
+                    if (applicationInfo != null) {
+                        result.success(true)
+                    } else {
+                        result.success(false)
+                    }
                 } else {
                     result.success(false)
                 }
